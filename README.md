@@ -5,8 +5,7 @@ Abandoned cart email extension. Looks for orders with line items that were creat
 Use the config values below to change settings:
 
 ```
-Spree::AbandonedCartEmail::Config.email_timeframe = 12.hours
-Spree::AbandonedCartEmail::Config.email_from = "spree@example.com"
+Spree::AbandonedCartEmail::Config.email_timeframe = 24.hours
 ```
 
 Override the email view to customise:
@@ -15,18 +14,10 @@ Override the email view to customise:
 app/views/spree/abandoned_cart_mailer/abandoned_email.html.erb
 ```
 
-Create a rake task to send the email:
-
-```
-desc "Abandoned cart emails"
-task send_abandond_cart_emails: :environment do
-  Spree::Order.self.email_eligible_abandoned_email_orders
-end
-```
 Create a cronjob to run every so often to send the emails:
 
 ```
-0 * * * * /bin/bash -l -c 'cd {your_application_home} && RAILS_ENV=production rake send_abandoned_cart_emails 2>&1'
+0 * * * * /bin/bash -l -c 'cd {your_application_home} && RAILS_ENV=production rake spree_abandoned_cart_email:send_emails 2>&1'
 ```
 
 ##Installation
@@ -34,7 +25,7 @@ Create a cronjob to run every so often to send the emails:
 Add spree_abandoned_cart_email to your Gemfile:
 
 ```ruby
-gem 'spree_abandoned_cart_email'
+gem 'spree_abandoned_cart_email', github: 'jdutil/spree_abandoned_cart_email'
 ```
 
 Bundle your dependencies and run the installation generator:
